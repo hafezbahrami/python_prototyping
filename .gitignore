@@ -33,6 +33,7 @@ src/aspen_deployment_endpoints/lib
 obj
 bin
 *.sln
+python_multiprocessing/frames/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

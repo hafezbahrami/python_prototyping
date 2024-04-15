@@ -1,5 +1,5 @@
 """
-Let's assume we want to plot a certain data, which happened showing how Threads in Python perform the jobs, but one at the atime. meaning 
+Let's assume we want to plot a certain data, which happened showing how Threads in Python perform the jobs, but one at the a time. meaning 
 there is no paralelization. Every single task at each time involves one single process.
 """
 

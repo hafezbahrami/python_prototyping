@@ -1,7 +1,9 @@
-"""Load in some data and create an activity plot animation.
-The data was created using the threading module and provides histograms
-of function calls vs time in nanoseconds for each thread.
-This script uses multiple processes to hasten the workload"""
+"""
+Here we want to do the task of plotting explained in 00_animation_generation_single_process.py, using multiple process.
+
+The Key Change: Like any other parallelizable taks, we need to be able to completly define tasks in chunck that can be parallalizable.
+                Here we defined method, plotter, that for a given inputs can create the frame we want. For istance Frame 190 can be created 
+                even before Frame 2."""
 
 import pandas as pd
 import time

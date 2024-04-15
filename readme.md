@@ -5,10 +5,10 @@ https://www.youtube.com/watch?v=AZnGRKFUU0c&t=12s&ab_channel=Dave%27sSpace
 2) With some graph showing how the multi-processing works in Python:
 https://www.youtube.com/watch?v=DThU1DN_bMs&ab_channel=Dave%27sSpa ce
 
-3) Python multi-processing: Simple example
-https://www.youtube.com/watch?v=ubEW-BTs60s&ab_channel=Dave%27sSpace
-
-
+3) Multi processing simple example: How we can distribute the plotting and creating so many frames of a movie (movie of plots here to different processes)
 https://www.youtube.com/watch?v=NZ3QWpW8kv8&ab_channel=Dave%27sSpace
+
+4) Python multi-processing: Simple example (This I could not get it running yet)
+https://www.youtube.com/watch?v=ubEW-BTs60s&ab_channel=Dave%27sSpace
 
 https://www.youtube.com/watch?v=BhnB45Rf3dg&list=PL_dsdStdDXbruQyokDHb5W1cJjLvJUlvI&index=1&ab_channel=CognitiveProgrammer

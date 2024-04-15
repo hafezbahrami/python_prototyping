@@ -5,3 +5,5 @@ set codec=-c:v libx264 -preset veryslow -tune animation -crf 17 -pix_fmt yuv420p
 
 ffmpeg -y -r %fpsin% -i "frames/frame_%%04d.png" -filter_complex "fps=%fpsout%,%scale%" %codec% "animation.mp4"
 
+cmd /k
+

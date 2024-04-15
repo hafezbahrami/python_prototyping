@@ -11,12 +11,15 @@ from tqdm import tqdm as tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 
+from typing import List, Tuple
+
 plt.style.use('dark_background')
 plt.rcParams['font.size'] = 16
 
-
+# Look at the 00_animation_generation_single_process.py file for description on what we plot here
 def plotter(data, N0, N1, NT = 3600):
-
+    """We want to create total number of Frame of NT. 
+    That starts from Frame-N0 and goes all the way to Frame-N1."""
     # Plot Params
     NROWS = 3
 
@@ -59,7 +62,7 @@ def plotter(data, N0, N1, NT = 3600):
             ax.set_ylim([-0.1, NTHREADS+0.1])
             ax.set_yticks(np.arange(0, NTHREADS+1, 1))
             ax.set_yticklabels(
-                np.arange(0, NTHREADS+1, 1, dtype=np.int))
+                np.arange(0, NTHREADS+1, 1, dtype=np.int64))
             ax.set_xlim(np.array(t_lim)/1E6)
 
         axs[-1].set(xlabel="time (ms)")
@@ -77,8 +80,9 @@ def plotter(data, N0, N1, NT = 3600):
 
 
 if __name__ == "__main__":
+    """We want to load data once, and then distribute the plotting-action into different processes"""
 
-    NFRAMES_TOTAL = 3600
+    NFRAMES_TOTAL = 200
     NPLOTTERS = os.cpu_count()
 
     # Load data
@@ -90,12 +94,20 @@ if __name__ == "__main__":
     data.sort_index(inplace=True)
     data.loc[:, "Activity"] = data.loc[:, "fn calls"] > 0
 
+    # (I) cretae XX number of processes
     with Pool(processes=NPLOTTERS) as p:
         time.sleep(1)
-        bounds = np.linspace(0, NFRAMES_TOTAL, NPLOTTERS+1, dtype=np.int)
-        iterable = [(data, bounds[i], bounds[i+1], NFRAMES_TOTAL)
+
+        # (II) create iterables: chunck of tasjs in a list, then we want to distribute this iterable to various processes.
+        #      iterable is a list of tuples. In each Tuple we have:
+        #                                ( DataFrame,  N_frame_start, N_frame_end, total_#_of_frame). 
+        #      Basically the 3 last ints are ipot to the plot method above, that each process need to make a call.
+        bounds = np.linspace(0, NFRAMES_TOTAL, NPLOTTERS+1, dtype=np.int64)
+        iterable: List[Tuple[pd.DataFrame, int, int, int]] = [(data, bounds[i], bounds[i+1], NFRAMES_TOTAL)
                     for i in range(NPLOTTERS)]
         timer0 = time.perf_counter()
+
+        # (III) Sending each individual task_of_plotting in the iterable, into various processes we cretaed using Pool library above
         p.starmap(plotter, iterable, chunksize=1)
         timer1 = time.perf_counter()
 

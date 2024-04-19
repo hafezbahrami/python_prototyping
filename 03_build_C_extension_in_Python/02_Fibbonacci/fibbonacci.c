@@ -3,13 +3,30 @@
 
 // Reference: https://tutorialedge.net/python/python-c-extensions-tutorial/
 
+// A dumb Module to calculate the Fibbonacci number in C to make it faster!
+
 #include <Python.h>
 
 
+int Cfib(int n)
+{
+    if (n < 2)
+        return n;
+    else
+        return Cfib(n-1)+Cfib(n-2);
+}
+
 //Creating our PyObject  (following Python standard on what to put in input argumets)
-static PyObject *helloWorld(PyObject *self, PyObject *args){
-   printf("Hello World, from C-extension of Python!");
-    return Py_None;
+static PyObject *fib(PyObject *self, PyObject *args)
+{
+    // Instantiate our n value
+    int n;
+    // if our n value
+    if(!PyArg_ParseTuple(args, "i", &n))
+        return NULL;
+
+    // return our computed fibbonacci number
+    return Py_BuildValue("i", Cfib(n));
 }
 
 
@@ -22,7 +39,7 @@ static PyObject *version(PyObject *self){
 // We require this "Null" to signal the end of our method
 // Definition
 static PyMethodDef myDumbMethods[] = {
-    {"helloWorld", helloWorld, METH_VARARGS, "Some Description Here: Say Hello to the World"},
+    {"fib", fib, METH_VARARGS, "Some Description Here: A dumb Module to calculate the Fibbonacci number in C to make it faster!"},
     {"version", (PyCFunction)version, METH_NOARGS, "return the version of the module"},
     {NULL, NULL, 0, NULL}
 };
@@ -31,7 +48,7 @@ static PyMethodDef myDumbMethods[] = {
 static struct PyModuleDef myDumbModule = {
     PyModuleDef_HEAD_INIT,
     "myDumbModule",
-    "say hello to the worls to test the Module",
+    "A dumb Module to calculate the Fibbonacci number in C to make it faster!",
     -1, // global state
     myDumbMethods
 };

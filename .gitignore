@@ -34,6 +34,7 @@ obj
 bin
 *.sln
 python_multiprocessing/frames/
+./03_build_C_extension_in_Python/01_Hello_World_Module/build/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

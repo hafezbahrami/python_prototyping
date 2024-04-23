@@ -37,6 +37,7 @@ python_multiprocessing/frames/
 ./03_build_C_extension_in_Python/01_Hello_World_Module/build/
 ./03_build_C_extension_in_Python/02_Fibbonacci/build/
 ./03_build_C_extension_in_Python/02_Fibbonacci/*.so
+./03_build_C_extension_in_Python/03_heartbeat/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

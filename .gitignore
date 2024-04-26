@@ -26,6 +26,7 @@ temp_stub_project/
 *.egg-info/
 .installed.cfg
 *.egg
+03_heartbeat/
 
 # Project specific
 src/aspen_deployment_endpoints/lib

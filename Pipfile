@@ -13,6 +13,7 @@ tqdm="*"
 [dev-packages]
 ipykernel="*"
 cryptography="*"
+pycryptodome="*"
 numba = "*"
 
 [requires]

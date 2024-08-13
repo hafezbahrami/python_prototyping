@@ -1,0 +1,72 @@
+<!--DOCTYPE and HTML Declaration: 
+    This defines the document type and the start of the HTML content. It ensures that the browser knows this is an HTML5 document.-->
+<!DOCTYPE html>
+<html lang="en">
+
+<!--Head Section:
+<meta charset="UTF-8"> specifies the character encoding for the document, ensuring that the text is displayed correctly.
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> makes the web page responsive on all devices by controlling the page's dimensions and scaling.
+<title>WebSocket Client</title> sets the title of the web page, which appears in the browser tab.
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+</head>
+
+<!--Body Section:
+
+<h1>WebSocket Client</h1> creates a heading with the text "WebSocket Client".
+<div> elements group related content together.
+<input type="text" id="messageInput" placeholder="Enter a message" /> creates a text input field where the user can type a message.
+<button onclick="sendMessage()">Send Message</button> creates a button that, when clicked, triggers the sendMessage() JavaScript function.
+<div id="output"></div> is an empty div where messages (both sent and received) will be displayed.
+-->
+
+<body>
+    <h1>WebSocket Client</h1>
+    <div>
+        <input type="text" id="messageInput" placeholder="Enter a message" />
+        <button onclick="sendMessage()">Send Message</button>
+    </div>
+    <div id="output"></div>
+
+    <!--JavaScript Section: 
+        The JavaScript code embedded in the index.html file is responsible for managing the WebSocket 
+        connection and handling UI updates
+    --> 
+    <script>
+        // (1) Create a new WebSocket connection: This line establishes a new WebSocket connection to the server running at ws://localhost:8765. The WebSocket object is used to interact with the server.
+        const socket = new WebSocket('ws://localhost:8765');
+
+        // (2) Event listener for when the WebSocket connection is opened
+        //     The "onopen" event listener is triggered when the WebSocket connection is successfully established. It logs a confirmation message to the browser console and updates the output div on the web page to inform the user that the connection is active.
+        socket.onopen = function(event) {
+            console.log("Connected to WebSocket server");
+            document.getElementById('output').innerHTML += "<p>Connected to WebSocket server</p>";
+        };
+
+        // (3) Event listener for receiving messages from the server
+        //     The "onmessage" event listener is activated whenever the WebSocket server sends a message to the client. The received message (event.data) is logged to the console and displayed in the output div on the web page, prefixed with "Server:".
+        socket.onmessage = function(event) {
+            console.log("Received message from server:", event.data);
+            document.getElementById('output').innerHTML += `<p>Server: ${event.data}</p>`;
+        };
+
+        // (4) Function to send a message to the server
+        //     The sendMessage() function is triggered when the user clicks the "Send Message" button. It retrieves the text from the messageInput field, sends it to the server via the WebSocket connection, and displays the message in the output div with a "You:" label.
+        function sendMessage() {
+            const message = document.getElementById('messageInput').value;
+            socket.send(message);
+            document.getElementById('output').innerHTML += `<p>You: ${message}</p>`;
+        }
+
+        // (5) Event listener for when the WebSocket connection is closed
+        //     The onclose event listener is triggered when the WebSocket connection is closed, either by the server or the client. It logs a message to the console and updates the output div to notify the user that the connection has been closed.
+        socket.onclose = function(event) {
+            console.log("WebSocket connection closed");
+            document.getElementById('output').innerHTML += "<p>WebSocket connection closed</p>";
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<style>
+.terminal {
+    background-color: #2C2C2C;
+    white-space: pre-wrap;
+    color: #DCDCCC;
+    box-sizing: border-box;
+    width: 1250px;
+    height: 30em;
+    margin: 0 auto;
+    padding: 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    text-align: left;
+    font-size: 1.25em;
+    font-family: monospace;
+    overflow: scroll;  
+    display: flex;
+    flex-direction: column-reverse;
+}
+</style>
+
+
+<h2>Model</h2>
+<pre><code>[     Y1*Y3 = 3*X1 - cos(X2*X3) - 0.5              ]
+[                                                  ]
+[  2            2                2                 ]
+[Y2  - 3*Y3 = X1  - 81*(X2 + 0.1)  + sin(X3) + 1.06]
+[                                                  ]
+[                         10*pi    -X1*X2          ]
+[        Y3 = 20*X3 - 1 + ----- + e                ]
+[                           3                      ]
+</code></pre><br>
+
+<div>
+    HINT: This model converges rapidly with X2 &lt 2<br>
+    <label for="X1">X1</label>
+    <input type="range" id="X1" name="X1" min="0" max="10" step="any"/><br>
+</div>
+
+<div>
+    <label for="X2">X2</label>
+    <input type="range" id="X2" name="X2" min="0" max="10" step="any" />
+</div>
+
+<div>
+    <label for="X3">X3</label>
+    <input type="range" id="X3" name="X3" min="0" max="10" step="any" />
+</div>
+
+<h4>Input</h4>
+<p>X1 = <output id="valueX1"></output></p>
+<p>X2 = <output id="valueX2"></output></p>
+<p>X3 = <output id="valueX3"></output></p>
+
+<h4>Output</h4>
+<p>Y1 = <output id="valueY1"></output></p>
+<p>Y2 = <output id="valueY2"></output></p>
+<p>Y3 = <output id="valueY3"></output></p>
+<div class="terminal", id="term"></div>
+<script>
+    // Functions
+    function compute(ws, X1, X2, X3) {
+        const input = new Float64Array([X1, X2, X3]) 
+        ws.send(input)
+    }
+    // Connect to websocket
+    const websocket = new WebSocket("ws://127.0.0.1:8765")
+    // Inputs
+    const inputX1 = document.querySelector("#X1");
+    const inputX2 = document.querySelector("#X2");
+    const inputX3 = document.querySelector("#X3");
+    // Values
+    const valueX1 = document.querySelector("#valueX1");
+    const valueX2 = document.querySelector("#valueX2");
+    const valueX3 = document.querySelector("#valueX3");
+    const valueY1 = document.querySelector("#valueY1");
+    const valueY2 = document.querySelector("#valueY2");
+    const valueY3 = document.querySelector("#valueY3");
+    const term = document.getElementById("term");
+    // Reader... why does javascript exist...
+    const message_reader = new FileReader();
+    // Set inital Values
+    valueX1.textContent = inputX1.value;
+    valueX2.textContent = inputX2.value;
+    valueX3.textContent = inputX1.value;
+    // Listeners
+    inputX1.addEventListener("input", (event) => {
+        valueX1.textContent = event.target.value;
+        compute(websocket, inputX1.value, inputX2.value, inputX3.value);
+    });
+    inputX2.addEventListener("input", (event) => {
+        valueX2.textContent = event.target.value;
+        compute(websocket, inputX1.value, inputX2.value, inputX3.value);
+    });
+    inputX3.addEventListener("input", (event) => {
+        valueX3.textContent = event.target.value;
+        compute(websocket, inputX1.value, inputX2.value, inputX3.value);
+    });
+    websocket.addEventListener("message", (event) => {
+        if (typeof event.data == "string") {
+            term.innerHTML += `${event.data}<br>`; 
+        } else {
+            message_reader.readAsArrayBuffer(event.data)
+        }
+    });
+    message_reader.addEventListener("loadend", () => {
+        const results = new Float64Array(message_reader.result)
+        valueY1.textContent = results[0];
+        valueY2.textContent = results[1];
+        valueY3.textContent = results[2];
+    });
+</script>

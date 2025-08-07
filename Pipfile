@@ -9,6 +9,7 @@ scipy="*"
 matplotlib="*"
 pandas="*"
 tqdm="*"
+opencv-python="*"
 
 [dev-packages]
 ipykernel="*"

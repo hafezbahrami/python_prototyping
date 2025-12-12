@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools", "Cython"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "my_proj_name"
+name = "my_cythonized_package"
 authors = [
     {name="Author Name", email="author.name@email.com"},
 ]
@@ -12,9 +12,7 @@ classifiers=[
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-dependencies = [
-    "numpy"
-]
+dependencies = []
 optional-dependencies.dev = [
     "pytest",
     "coverage",
@@ -29,6 +27,7 @@ optional-dependencies.dev = [
     "semver",
     "changelog-cli",
     "build",
+    "Cython",
 ]
 dynamic = ["version"]
 
@@ -39,7 +38,7 @@ Repository = "http://project.url"
 where = ["src"]
 
 [tool.setuptools.dynamic]
-version = {attr = "new_package.__version__"}
+version = {attr = "my_cythonized_package.__version__"}
 
 [tool.black]
 line-length = 120

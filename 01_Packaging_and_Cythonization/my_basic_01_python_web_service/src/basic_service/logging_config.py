@@ -1,0 +1,12 @@
+import logging
+import os
+
+LOG_LEVEL = logging.DEBUG if os.getenv("ENV") == "dev" else logging.INFO
+
+logging.basicConfig(
+    level=LOG_LEVEL,
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+)
+
+def get_logger(name: str) -> logging.Logger:
+    return logging.getLogger(name)

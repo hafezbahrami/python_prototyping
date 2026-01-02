@@ -28,7 +28,7 @@ async def app_exception_handler(request: Request, exc: AppException):
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    # validation failures land here
+    # validation failures (incoming http request (the msin body) does not comply with the paydantic object
     return JSONResponse(status_code=422, content={"detail": exc.errors()})
 
 app.include_router(router)

@@ -10,7 +10,7 @@ from .dtos import (
 )
 from .service import generate_commands, audit_request
 
-logger = get_logger("endpoint")
+logger = get_logger("myEndpointLoggerName")
 
 router = APIRouter(prefix="/api/v1/ava", tags=["ava"])
 

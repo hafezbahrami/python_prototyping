@@ -9,7 +9,7 @@ from basic_service.api.v1.endpoints import router
 
 from basic_service.logging_config import get_logger
 
-logger = get_logger("debug")
+logger = get_logger("myDebugLogName")
 
 app = FastAPI(
     title="Basic Educational Web Service",
@@ -20,6 +20,7 @@ app = FastAPI(
 
 @app.exception_handler(AppException)
 async def app_exception_handler(request: Request, exc: AppException):
+    logger.warning(f"VALIDATION ERROR at {request.url.path}: {exc.errors()}")
     return JSONResponse(
         status_code=exc.status_code,
         content={"error": exc.message},
@@ -29,6 +30,7 @@ async def app_exception_handler(request: Request, exc: AppException):
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     # validation failures (incoming http request (the msin body) does not comply with the paydantic object
+    logger.warning(f"VALIDATION ERROR at {request.url.path}: {exc.errors()}")
     return JSONResponse(status_code=422, content={"detail": exc.errors()})
 
 app.include_router(router)
@@ -60,6 +62,8 @@ if APP_CONFIG.is_dev:
 
         # C) raw body bytes (this is the closest to "wire format" you'll see in app code)
         body_bytes = await request.body()
+        logger.debug(f"RAW BODY BYTES: {body_bytes[:200]!r}")
+
         body_text = body_bytes.decode("utf-8", errors="replace")
 
         # D) OPTIONAL: try parse JSON in middleware (educational; FastAPI will also parse later)
@@ -92,6 +96,8 @@ if APP_CONFIG.is_dev:
         request._receive = receive  # dev-only hack
 
         # E) pass control onward (routing + validation + endpoint)
+        logger.info(f"At MiddleWare, and ready to pass control onward (routing + validation + endpoint)")
+        logger.info(f"IN {request.method} {request.url.path}")
         response = await call_next(request)
 
         # "outgoing response snapshot"

@@ -2,12 +2,15 @@ import asyncio
 from .dtos import EngineeringApp
 from basic_service.logging_config import get_logger
 
-logger = get_logger("service")
+logger = get_logger("myServiceLogName")
 
 
 async def generate_commands(app: EngineeringApp, query: str) -> list[str]:
     logger.debug("Starting command generation")
+    
+    logger.debug("generate_commands: start")
     await asyncio.sleep(0.2)
+    logger.debug("generate_commands: after await")
 
     if app.name == "HYSYS":
         return []

@@ -9,6 +9,8 @@ from basic_service.db import engine
 from basic_service.api.v1.models import Base
 from basic_service.api.v1.endpoints import router
 
+from .config import APP_CONFIG
+
 logger = get_logger("app")
 
 @asynccontextmanager

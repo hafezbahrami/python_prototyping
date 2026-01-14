@@ -15,7 +15,8 @@
         "--reload"
       ],
       "env": {
-        "ENV": "dev"
+        "ENV": "dev",
+        "DATABASE_URL": "postgresql+asyncpg://hafezbahrami:mehrshad_13958@127.0.0.1:5432/mydb",
       }
     }
   ]

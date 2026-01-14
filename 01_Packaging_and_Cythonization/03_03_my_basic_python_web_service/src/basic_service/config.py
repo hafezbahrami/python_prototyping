@@ -6,6 +6,7 @@ class AppConfig:
     app_name: str
     app_version: str
     env: str
+    database_url: str
 
     @property
     def is_dev(self) -> bool:

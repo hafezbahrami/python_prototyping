@@ -19,6 +19,10 @@ async def get_session() -> AsyncSession:
     """
     Dependency that gives an endpoint a database session.
     FastAPI will create it per request, and we close it after.
+    Think of a database session like:
+
+    A phone call between your app and the database. ---> (1) Call starts 📞, (2) You talk (queries, inserts, updates), (3) Call ends ☎️
+    This function is responsible for: (1) Opening the call, (2) Letting you talk, (3) Closing the call no matter what happens
     """
     async with SessionMaker() as session:
         yield session
